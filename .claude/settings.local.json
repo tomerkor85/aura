@@ -46,7 +46,11 @@
       "Bash(git -C C:/Users/Tahel/aura remote -v)",
       "Bash(git -C C:/Users/Tahel/aura rm -r --cached --ignore-unmatch node_modules .next)",
       "Bash(git -C C:/Users/Tahel/aura add -A --dry-run)",
-      "Bash(git -C C:/Users/Tahel/aura check-ignore -v node_modules/ .next/ aaa.zip tsconfig.tsbuildinfo)"
+      "Bash(git -C C:/Users/Tahel/aura check-ignore -v node_modules/ .next/ aaa.zip tsconfig.tsbuildinfo)",
+      "Bash(git -C C:/Users/Tahel/aura commit -m ' *)",
+      "Bash(git -C C:/Users/Tahel/aura push -u origin frontend)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm uninstall *)"
     ]
   }
 }

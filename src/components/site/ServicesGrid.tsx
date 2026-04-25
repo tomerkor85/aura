@@ -78,7 +78,7 @@ function CardSmallMuted({ card }: { card: ServiceCard }) {
 
 export default function ServicesGrid({ services }: { services: SiteContent['services'] }) {
   return (
-    <section className="py-32 bg-surface" id="services">
+    <section className="py-32 bg-surface/88 backdrop-blur-md" id="services">
       <div className="max-w-screen-2xl mx-auto px-8">
         <div className="mb-20 text-center">
           <h2 className="font-headline text-5xl md:text-6xl font-bold mb-4">{services.title}</h2>

@@ -16,13 +16,107 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+html.lenis body {
+  overscroll-behavior: contain;
+}
+
 body {
   font-family: 'Manrope', sans-serif;
-  background-color: #151312;
+  background-color: #0c0a09;
   color: #e8e1df;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.scene-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/* —— Mosaic Hero (Strata) ——————————————————————————————— */
+
+.mosaic-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 70% 30%, rgba(160, 98, 46, 0.10), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(92, 61, 40, 0.18), transparent 60%),
+    #0c0a09;
+}
+
+.mosaic-stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+}
+
+.mosaic-layer {
+  position: absolute;
+  inset: 4vh 4vw;            /* leaves a frame of background visible */
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+}
+
+.mosaic-tile {
+  position: absolute;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1a1614;
+  box-shadow:
+    0 12px 40px -12px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 220, 196, 0.04);
+  will-change: transform;
+}
+
+.mosaic-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Subtle warm wash on every tile so they feel like a single composition. */
+.mosaic-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(160deg, rgba(255, 183, 128, 0.05) 0%, transparent 35%),
+    linear-gradient(0deg, rgba(12, 10, 9, 0.45) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+/* Vignette around the mosaic so edges fade into the page background. */
+.mosaic-edge-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(12, 10, 9, 0.7) 100%);
 }
 
 ::selection {

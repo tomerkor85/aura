@@ -1,123 +1,72 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import { SiteContent } from '@/types/content'
-import FloatingCardsHero from './FloatingCardsHero'
-
-function HeroContent({ hero }: { hero: SiteContent['hero'] }) {
-  return (
-    <div className="relative z-10 max-w-screen-2xl mx-auto px-8 w-full flex flex-col items-start md:items-center text-right md:text-center">
-      <span className="text-primary font-body uppercase tracking-[0.4em] text-xs font-semibold mb-6">
-        {hero.badge}
-      </span>
-      <h1 className="font-headline text-6xl md:text-9xl font-extrabold tracking-tighter text-on-background mb-8 leading-[0.9] text-glow">
-        {hero.title}{' '}
-        <span className="italic font-light text-primary">{hero.titleItalic}</span>
-      </h1>
-      <p className="font-headline text-2xl md:text-4xl text-secondary-fixed max-w-3xl leading-relaxed mb-12 opacity-90">
-        {hero.subtitle}
-      </p>
-      <a
-        href="#contact"
-        className="bg-gradient-to-r from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-body font-bold text-lg hover:brightness-110 transition-all inline-block"
-      >
-        {hero.ctaButton}
-      </a>
-    </div>
-  )
-}
-
-function ScrollHint() {
-  return (
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30 z-10">
-      <span className="material-symbols-outlined text-4xl animate-bounce">expand_more</span>
-    </div>
-  )
-}
 
 export default function HeroSection({ hero }: { hero: SiteContent['hero'] }) {
-  const base = 'relative w-full min-h-screen flex items-center justify-center overflow-hidden'
-  const opacity = hero.backgroundOpacity ?? 0.5
-
-  if (hero.layoutMode === 'image-bg' && hero.backgroundImage) {
-    return (
-      <section className={base}>
-        <img
-          src={hero.backgroundImage}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/40 to-surface/80" />
-        <HeroContent hero={hero} />
-        <ScrollHint />
-      </section>
-    )
-  }
-
-  if (hero.layoutMode === 'video-bg' && hero.backgroundVideo) {
-    return (
-      <section className={base}>
-        <video
-          src={hero.backgroundVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-surface/60 via-surface/40 to-surface/80" />
-        <HeroContent hero={hero} />
-        <ScrollHint />
-      </section>
-    )
-  }
-
-  if (hero.layoutMode === 'image-grid' && hero.gridImages.length > 0) {
-    return (
-      <section className={base}>
-        {/* Masonry grid — images maintain natural height (not equal boxes) */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ opacity }}
-          aria-hidden="true"
-        >
-          <div
-            style={{
-              columnCount: 3,
-              columnGap: '4px',
-              padding: '4px',
-            }}
-          >
-            {hero.gridImages.map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt=""
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  marginBottom: '4px',
-                  breakInside: 'avoid',
-                }}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-surface/70 via-surface/50 to-surface/90" />
-        <HeroContent hero={hero} />
-        <ScrollHint />
-      </section>
-    )
-  }
-
-  if (hero.layoutMode === 'floating-cards') {
-    return <FloatingCardsHero hero={hero} />
-  }
-
-  // Default: text-only
   return (
-    <section className={`${base} hero-gradient`}>
-      <HeroContent hero={hero} />
-      <ScrollHint />
+    <section
+      id="hero"
+      className="relative w-full h-screen flex flex-col items-center justify-center px-8 text-center"
+      aria-label="כותרת ראשית"
+    >
+      <motion.span
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="text-primary font-body uppercase tracking-[0.45em] text-[11px] font-medium mb-10"
+      >
+        {hero.badge}
+      </motion.span>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 28 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.3, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="font-headline text-7xl md:text-[10rem] leading-[0.86] tracking-tighter text-on-background mb-8 mix-blend-screen"
+        style={{ textShadow: '0 0 40px rgba(160, 98, 46, 0.25)' }}
+      >
+        <span className="font-extrabold">{hero.title}</span>{' '}
+        <span className="italic font-light text-primary/95">{hero.titleItalic}</span>
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+        className="font-headline text-xl md:text-3xl text-secondary-fixed/85 max-w-2xl leading-relaxed mb-12 font-light"
+      >
+        {hero.subtitle}
+      </motion.p>
+
+      <motion.a
+        href="#contact"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+        className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full
+                   bg-white/[0.04] backdrop-blur-md border border-white/15
+                   text-on-background font-body text-base tracking-wider
+                   hover:bg-white/[0.08] hover:border-primary/50 transition-all duration-500"
+      >
+        <span>{hero.ctaButton}</span>
+        <span className="text-primary translate-x-0 group-hover:-translate-x-1 transition-transform duration-300">
+          ←
+        </span>
+      </motion.a>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.45 }}
+        transition={{ duration: 1, delay: 1.6 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        aria-hidden="true"
+      >
+        <span className="text-[10px] font-body uppercase tracking-[0.4em] text-on-background/60">
+          scroll
+        </span>
+        <div className="w-px h-14 bg-gradient-to-b from-on-background/60 to-transparent" />
+      </motion.div>
     </section>
   )
 }
