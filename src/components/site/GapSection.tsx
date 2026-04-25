@@ -2,7 +2,7 @@ import { SiteContent } from '@/types/content'
 
 export default function GapSection({ gap }: { gap: SiteContent['gap'] }) {
   return (
-    <section className="py-32 bg-surface-container-low/85 backdrop-blur-md overflow-hidden">
+    <section className="py-32 bg-surface/46 overflow-hidden">
       <div className="max-w-screen-2xl mx-auto px-8">
         <div className="grid md:grid-cols-2 gap-20 items-center">
           <div className="relative">
@@ -13,7 +13,7 @@ export default function GapSection({ gap }: { gap: SiteContent['gap'] }) {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-surface-container-highest rounded-xl p-8 backdrop-blur-3xl border border-outline-variant/20 hidden md:block">
+            <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-surface/45 rounded-xl p-8 border border-outline-variant/25 hidden md:block">
               <div className="flex flex-col gap-4">
                 <span className="material-symbols-outlined text-primary text-4xl">analytics</span>
                 <p className="font-body text-sm leading-relaxed text-on-surface-variant">

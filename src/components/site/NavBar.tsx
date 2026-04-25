@@ -4,7 +4,7 @@ import { SiteContent } from '@/types/content'
 
 export default function NavBar({ nav }: { nav: SiteContent['nav'] }) {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-stone-950/40 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-surface/50">
       {/* In RTL: flex flows right→left, so logo (first) is rightmost, CTA (last) is leftmost */}
       <div className="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
         <div className="text-2xl font-headline tracking-tight text-stone-200">

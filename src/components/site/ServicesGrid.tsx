@@ -16,11 +16,11 @@ function BgImage({ card }: { card: ServiceCard }) {
 
 function CardLarge({ card }: { card: ServiceCard }) {
   return (
-    <div className="md:col-span-8 rounded-xl p-10 flex flex-col justify-between group hover:brightness-110 transition-all duration-500 overflow-hidden relative bg-surface-container-high min-h-[280px]">
+    <div className="md:col-span-8 rounded-xl p-10 flex flex-col justify-between group hover:brightness-110 transition-all duration-500 overflow-hidden relative bg-surface/30 border border-white/10 min-h-[280px]">
       <BgImage card={card} />
       {/* Dark scrim so text stays readable over any bg image */}
       {card.imageUrl && (
-        <div className="absolute inset-0 bg-gradient-to-l from-surface-container-high/80 to-surface-container-high/40 rounded-xl" />
+        <div className="absolute inset-0 bg-gradient-to-l from-surface/42 to-surface/18 rounded-xl" />
       )}
       {!card.imageUrl && (
         <div className="absolute -bottom-10 -left-10 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
@@ -40,10 +40,10 @@ function CardLarge({ card }: { card: ServiceCard }) {
 
 function CardSmallAccent({ card }: { card: ServiceCard }) {
   return (
-    <div className="md:col-span-4 bg-primary-container rounded-xl p-10 flex flex-col justify-end text-on-primary-container relative overflow-hidden min-h-[240px]">
+    <div className="md:col-span-4 bg-primary-container/86 border border-primary/25 rounded-xl p-10 flex flex-col justify-end text-on-primary-container relative overflow-hidden min-h-[240px]">
       <BgImage card={card} />
       {card.imageUrl && (
-        <div className="absolute inset-0 bg-primary-container/60 rounded-xl" />
+        <div className="absolute inset-0 bg-primary-container/30 rounded-xl" />
       )}
       {card.icon && (
         <div className="absolute top-0 right-0 p-10 opacity-50 z-10">
@@ -60,10 +60,10 @@ function CardSmallAccent({ card }: { card: ServiceCard }) {
 
 function CardSmallMuted({ card }: { card: ServiceCard }) {
   return (
-    <div className="md:col-span-4 bg-surface-container-low rounded-xl border border-outline-variant/10 p-10 flex flex-col items-center text-center justify-center gap-6 relative overflow-hidden min-h-[240px]">
+    <div className="md:col-span-4 bg-surface/28 rounded-xl border border-outline-variant/20 p-10 flex flex-col items-center text-center justify-center gap-6 relative overflow-hidden min-h-[240px]">
       <BgImage card={card} />
       {card.imageUrl && (
-        <div className="absolute inset-0 bg-surface-container-low/70 rounded-xl" />
+        <div className="absolute inset-0 bg-surface/34 rounded-xl" />
       )}
       <div className="relative z-10 flex flex-col items-center gap-6">
         {card.icon && (
@@ -78,7 +78,7 @@ function CardSmallMuted({ card }: { card: ServiceCard }) {
 
 export default function ServicesGrid({ services }: { services: SiteContent['services'] }) {
   return (
-    <section className="py-32 bg-surface/88 backdrop-blur-md" id="services">
+    <section className="py-32 bg-surface/50" id="services">
       <div className="max-w-screen-2xl mx-auto px-8">
         <div className="mb-20 text-center">
           <h2 className="font-headline text-5xl md:text-6xl font-bold mb-4">{services.title}</h2>

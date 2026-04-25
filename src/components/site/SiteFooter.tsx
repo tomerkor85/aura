@@ -2,7 +2,7 @@ import { SiteContent } from '@/types/content'
 
 export default function SiteFooter({ footer }: { footer: SiteContent['footer'] }) {
   return (
-    <footer className="bg-stone-950 border-t border-stone-800/30">
+    <footer className="bg-surface/50 border-t border-stone-800/30">
       <div className="max-w-screen-2xl mx-auto px-12 py-16">
         <div className="flex flex-col md:flex-row-reverse justify-between items-start md:items-center mb-12">
           <div className="text-3xl font-headline italic text-stone-100 mb-8 md:mb-0">

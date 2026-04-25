@@ -8,7 +8,6 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from 'react'
-import Lenis from 'lenis'
 
 export interface ScrollState {
   progress: number
@@ -30,33 +29,29 @@ export default function ScrollProvider({ children }: { children: ReactNode }) {
   const stateRef = useRef<ScrollState>({ progress: 0, velocity: 0, scrollY: 0 })
 
   useEffect(() => {
-    const html = document.documentElement
-    html.classList.add('lenis')
-
-    const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      lerp: 0.085,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.4,
-    })
-
     let rafId = 0
-    const raf = (time: number) => {
-      lenis.raf(time)
-      const limit = lenis.limit || 1
-      stateRef.current.progress = Math.min(1, Math.max(0, lenis.scroll / limit))
-      stateRef.current.velocity = lenis.velocity
-      stateRef.current.scrollY = lenis.scroll
-      rafId = requestAnimationFrame(raf)
+    let prevY = window.scrollY
+    let prevTime = performance.now()
+
+    const tick = (now: number) => {
+      const scrollY = window.scrollY
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+      const dt = Math.max(1, now - prevTime)
+      const velocity = (scrollY - prevY) / dt
+
+      stateRef.current.scrollY = scrollY
+      stateRef.current.progress = Math.min(1, Math.max(0, scrollY / maxScroll))
+      stateRef.current.velocity = velocity
+
+      prevY = scrollY
+      prevTime = now
+      rafId = requestAnimationFrame(tick)
     }
-    rafId = requestAnimationFrame(raf)
+
+    rafId = requestAnimationFrame(tick)
 
     return () => {
       cancelAnimationFrame(rafId)
-      lenis.destroy()
-      html.classList.remove('lenis')
     }
   }, [])
 

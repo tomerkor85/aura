@@ -2,7 +2,7 @@ import { SiteContent } from '@/types/content'
 
 export default function AboutSection({ about }: { about: SiteContent['about'] }) {
   return (
-    <section className="py-32 bg-surface-container-low/80 backdrop-blur-md" id="about">
+    <section className="py-32 bg-surface/44" id="about">
       <div className="max-w-screen-2xl mx-auto px-8">
         <div className="flex flex-col md:flex-row-reverse gap-20 items-center">
           <div className="w-full md:w-1/2">
@@ -16,7 +16,7 @@ export default function AboutSection({ about }: { about: SiteContent['about'] })
             <p className="font-body text-xl text-stone-400 leading-loose mb-10">
               {about.description}
             </p>
-            <div className="p-8 border border-outline-variant/20 rounded-xl bg-surface/30 backdrop-blur-md">
+            <div className="p-8 border border-outline-variant/20 rounded-xl bg-surface/18">
               <p className="font-headline italic text-2xl text-on-surface mb-4">
                 &ldquo;{about.quote}&rdquo;
               </p>

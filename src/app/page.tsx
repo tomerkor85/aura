@@ -21,7 +21,7 @@ export default function Home() {
   const content = getContent()
 
   return (
-    <>
+    <div className="bg-surface/50">
       <NavBar nav={content.nav} />
       <main>
         <HeroSection hero={content.hero} />
@@ -32,6 +32,6 @@ export default function Home() {
         <ContactSection contact={content.contact} />
       </main>
       <SiteFooter footer={content.footer} />
-    </>
+    </div>
   )
 }

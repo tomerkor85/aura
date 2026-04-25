@@ -15,7 +15,7 @@ export default function ContactSection({ contact }: { contact: SiteContent['cont
   }
 
   return (
-    <section className="py-32 bg-surface/88 backdrop-blur-md" id="contact">
+    <section className="py-32 bg-surface/50" id="contact">
       <div className="max-w-screen-2xl mx-auto px-8">
         <div className="grid lg:grid-cols-2 gap-24">
           <div className="flex flex-col justify-center">

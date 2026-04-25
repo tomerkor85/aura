@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, useTime, MotionValue } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 
 interface TileShape {
@@ -54,6 +54,7 @@ export default function MosaicLayer() {
   if (!mounted) {
     return (
       <div className="mosaic-root" aria-hidden="true">
+        <div className="mosaic-dimmer" />
         <div className="mosaic-edge-fade" />
       </div>
     )
@@ -64,6 +65,7 @@ export default function MosaicLayer() {
 
 function MosaicLayerInner() {
   const { scrollYProgress } = useScroll()
+  const time = useTime()
 
   // Smooth out scroll so depth motion never jitters even with fast wheel input.
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.6 })
@@ -72,9 +74,10 @@ function MosaicLayerInner() {
     <div className="mosaic-root" aria-hidden="true">
       <div className="mosaic-stage">
         {LAYER_IMAGES.map((images, i) => (
-          <Layer key={i} index={i} images={images} progress={smooth} />
+          <Layer key={i} index={i} images={images} progress={smooth} time={time} />
         ))}
       </div>
+      <div className="mosaic-dimmer" />
       <div className="mosaic-edge-fade" />
     </div>
   )
@@ -84,9 +87,10 @@ interface LayerProps {
   index: number
   images: string[]
   progress: MotionValue<number>
+  time: MotionValue<number>
 }
 
-function Layer({ index, images, progress }: LayerProps) {
+function Layer({ index, images, progress, time }: LayerProps) {
   /**
    * Each layer occupies a "slot" in [0..1]. Slot advances with scroll:
    *   slot = (scrollProgress + i / N_LAYERS) mod 1
@@ -104,14 +108,21 @@ function Layer({ index, images, progress }: LayerProps) {
   const z = useTransform(slot, [0, 0.5, 1], [-1400, -200, 600])
 
   // Opacity rises near focal slot, falls at extremes (so wrap is invisible).
-  const opacity = useTransform(slot, [0, 0.08, 0.45, 0.78, 0.95, 1], [0, 0.15, 1, 0.85, 0, 0])
+  const opacity = useTransform(slot, [0, 0.1, 0.45, 0.78, 0.95, 1], [0, 0.12, 1, 0.78, 0, 0])
 
-  // Tiles get progressively blurred as they drift away from the focal slot.
-  const blur = useTransform(slot, [0, 0.5, 1], [10, 0, 14])
+  // Keep focus transitions visible but avoid "smear" during motion.
+  const blur = useTransform(slot, [0, 0.22, 0.5, 0.78, 1], [1.4, 0.45, 0, 0.55, 1.8])
   const filter = useTransform(blur, (b) => `blur(${b.toFixed(1)}px)`)
 
-  // Slow horizontal sweep of the whole layer (RTL-aware: positive = visual right).
-  const layerX = useTransform(slot, [0, 0.5, 1], [-40, 0, 40])
+  // Scroll-linked sweep of the whole layer (RTL-aware: positive = visual right).
+  const baseLayerX = useTransform(slot, [0, 0.5, 1], [-40, 0, 40])
+
+  // Keep layers gently alive even when user is not scrolling.
+  const layerX = useTransform([baseLayerX, time], (latest) => {
+    const [x, t] = latest as [number, number]
+    return x + Math.sin(t / 3000 + index * 0.8) * 6
+  })
+  const layerY = useTransform(time, (t) => Math.cos(t / 3600 + index * 0.7) * 2.5)
 
   return (
     <motion.div
@@ -119,12 +130,13 @@ function Layer({ index, images, progress }: LayerProps) {
       style={{
         translateZ: z,
         x: layerX,
+        y: layerY,
         opacity,
         filter,
       }}
     >
       {SHAPES.map((shape, t) => (
-        <Tile key={`${index}-${t}`} shape={shape} src={images[t]} progress={progress} seed={index * 7 + t} />
+        <Tile key={`${index}-${t}`} shape={shape} src={images[t]} progress={progress} time={time} seed={index * 7 + t} />
       ))}
     </motion.div>
   )
@@ -134,10 +146,11 @@ interface TileProps {
   shape: TileShape
   src: string
   progress: MotionValue<number>
+  time: MotionValue<number>
   seed: number
 }
 
-function Tile({ shape, src, progress, seed }: TileProps) {
+function Tile({ shape, src, progress, time, seed }: TileProps) {
   // Each tile gets unique drift parameters from a deterministic seed → no Math.random
   // (would re-shuffle every render and cause SSR mismatch).
   const params = useMemo(() => {
@@ -148,10 +161,24 @@ function Tile({ shape, src, progress, seed }: TileProps) {
     return { phase, ampX, ampY, speed }
   }, [seed])
 
-  // Tile drift: single horizontal oscillation per tile (cheaper than x/y/rotate).
-  const tileX = useTransform(
+  // Scroll-driven tile drift stays as the primary motion.
+  const scrollX = useTransform(
     progress,
     (p) => Math.sin((p * params.speed + params.phase) * Math.PI * 2) * params.ampX,
+  )
+
+  // Add subtle idle movement so scene does not freeze when scroll stops.
+  const idleX = useTransform(
+    time,
+    (t) => Math.sin((t / 1000) * (0.36 * params.speed) + params.phase * Math.PI * 2) * (params.ampX * 0.22),
+  )
+  const tileX = useTransform([scrollX, idleX], (latest) => {
+    const [sx, ix] = latest as [number, number]
+    return sx + ix
+  })
+  const tileY = useTransform(
+    time,
+    (t) => Math.cos((t / 1000) * (0.3 * params.speed) + params.phase * Math.PI * 2) * (params.ampY * 0.26),
   )
 
   return (
@@ -163,6 +190,7 @@ function Tile({ shape, src, progress, seed }: TileProps) {
         width: `${shape.width}%`,
         height: `${shape.height}%`,
         x: tileX,
+        y: tileY,
       }}
     >
       <img src={src} alt="" loading="lazy" />

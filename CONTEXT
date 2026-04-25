@@ -1,0 +1,98 @@
+# Aura Project Context (Load This In New Chats)
+
+## Project Snapshot
+- Project name: `aura`
+- Root: `c:\Users\Tahel\aura`
+- App type: Next.js App Router marketing site + in-app admin editor
+- Language direction: Hebrew, RTL (`<html lang="he" dir="rtl">`)
+
+## Tech Stack
+- Next.js `14.2.15`
+- React `18.3.1`
+- TypeScript (strict mode)
+- Tailwind CSS
+- Framer Motion
+- Extra installed libs: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing` (mostly unused in current home composition)
+
+## Important Rule In Repo
+- `AGENTS.md` says this Next.js may differ from typical assumptions.
+- Before major Next changes, read relevant docs under:
+  - `node_modules/next/dist/docs/`
+
+## Main Runtime Structure
+- Home page: `src/app/page.tsx`
+  - Reads content from `data/content.json` on server render
+  - Renders site sections from `src/components/site/*`
+- Layout: `src/app/layout.tsx`
+  - Wraps app with `ScrollProvider` and `MosaicLayer`
+  - Loads `globals.css`
+- API for content:
+  - `src/app/api/content/route.ts`
+  - `GET /api/content` -> returns JSON content
+  - `PUT /api/content` -> updates JSON after password check
+- Admin editor:
+  - `src/app/admin/page.tsx`
+  - Full editor UI for each content section
+  - Saves via `PUT /api/content`
+
+## Data Source / CMS-Like Model
+- Source of truth: `data/content.json`
+- Typed by: `src/types/content.ts`
+- Sections:
+  - `nav`, `hero`, `gap`, `solution`, `services`, `about`, `contact`, `footer`
+
+## Active UI Components (Used By Home)
+- `src/components/site/NavBar.tsx`
+- `src/components/site/HeroSection.tsx`
+- `src/components/site/GapSection.tsx`
+- `src/components/site/SolutionSection.tsx`
+- `src/components/site/ServicesGrid.tsx`
+- `src/components/site/AboutSection.tsx`
+- `src/components/site/ContactSection.tsx`
+- `src/components/site/SiteFooter.tsx`
+
+## Visual Background System
+- `src/components/MosaicLayer.tsx`
+  - Fixed layered animated mosaic with local `/public/images/*.webp`
+  - Framer motion scroll-depth effect
+
+## Commands
+- Dev server:
+  - `npm run dev`
+- Build:
+  - `npm run build`
+  - In PowerShell with execution policy issues, use:
+  - `npm.cmd run build`
+- Start production:
+  - `npm run start`
+- Alternate scripts in `package.json`:
+  - `ex1`, `ex2`, `ex3` call `bash switch.sh N` then `next dev`
+
+## `switch.sh` Notes
+- File: `switch.sh`
+- Behavior:
+  - Deletes and replaces `src` + `public` from `example-N` directories
+- Current repo state:
+  - `example-1/2/3` folders are not present now, so scripts likely fail unless those folders are added.
+
+## Build Status (Last Verified)
+- `next build` passed successfully when run as `npm.cmd run build`.
+
+## Known Risks / Follow-Ups
+- Security:
+  - `instagram_analyze/instagram_analyze.py` contains a hardcoded Instagram access token (should be rotated and moved to env vars).
+  - `src/app/api/content/route.ts` has fallback admin password `aura2024` if `ADMIN_PASSWORD` is unset (must be overridden in production).
+- Contact form:
+  - In `ContactSection`, submit is simulated with timeout; no real backend email/send integration yet.
+- Legacy components:
+  - Many files under `src/components` are currently not imported by `src/app/page.tsx`.
+
+## Environment Assumptions
+- OS in this workspace: Windows
+- Shell: PowerShell
+- Path alias: `@/*` -> `src/*` (see `tsconfig.json`)
+
+## Suggested "Load Prompt" For New Chat
+Use this text in a new session:
+"Read `CONTEXT` from project root and use it as working memory. Confirm key architecture, then continue from there."
+
