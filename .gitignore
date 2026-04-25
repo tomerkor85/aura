@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -30,16 +28,28 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
 
-# source assets (copies live in public/images/work/)
-/my-work/
-/my-video/
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE / editor
+.idea/
+.vscode/
+.kiro/
+
+# local Claude state (keep shared config)
+.claude/settings.local.json
+.claude/agent-memory/
+
+# OS
+Thumbs.db
+
+# large/local-only assets
+aaa.zip
