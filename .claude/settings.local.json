@@ -50,7 +50,9 @@
       "Bash(git -C C:/Users/Tahel/aura commit -m ' *)",
       "Bash(git -C C:/Users/Tahel/aura push -u origin frontend)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(npm uninstall *)"
+      "Bash(npm uninstall *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3000/_next/static/css/app/layout.css)"
     ]
   }
 }

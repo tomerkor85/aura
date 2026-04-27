@@ -5,10 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "ex1": "bash switch.sh 1 && next dev",
-    "ex2": "bash switch.sh 2 && next dev",
-    "ex3": "bash switch.sh 3 && next dev"
+    "start": "next start"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",

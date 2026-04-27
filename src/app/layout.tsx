@@ -1,28 +1,31 @@
-import type { Metadata } from 'next'
-import ScrollProvider from '@/components/ScrollProvider'
-import MosaicLayer from '@/components/MosaicLayer'
-import './globals.css'
+import type { Metadata } from "next";
+import { Manrope, Playfair_Display } from "next/font/google";
+import "./globals.css";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+});
 
 export const metadata: Metadata = {
-  title: 'Aura by Tahel Creative AI',
-  description: 'אורה — שפה ויזואלית מדויקת לעסקים. תמונות AI, תוכן ויזואלי, קמפיינים מותגיים.',
-  openGraph: {
-    title: 'Aura by Tahel Creative AI',
-    description: 'אורה — שפה ויזואלית מדויקת לעסקים.',
-    locale: 'he_IL',
-  },
-}
+  title: "Aura | AI, When It's Precise",
+  description:
+    "Aura creates cinematic AI visuals, branding systems, and premium content experiences.",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="he" dir="rtl">
-      <body>
-        <ScrollProvider>
-          <MosaicLayer />
-          <div className="content-layer">{children}</div>
-        </ScrollProvider>
-        <div className="grain-overlay" aria-hidden="true" />
-      </body>
+    <html lang="en">
+      <body className={`${manrope.variable} ${playfair.variable}`}>{children}</body>
     </html>
-  )
+  );
 }
